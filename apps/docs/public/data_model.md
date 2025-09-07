@@ -22,7 +22,7 @@ erDiagram
       uuid id PK
       string name
       string email
-      enum role  // learner|instructor|admin
+      string role
       json prefs
       datetime created_at
     }
@@ -39,7 +39,7 @@ erDiagram
       uuid id PK
       uuid user_id FK
       uuid course_id FK
-      enum role // learner|ta|instructor
+      string role
       datetime enrolled_at
     }
 
@@ -61,7 +61,7 @@ erDiagram
       json starter_files
       json tests_public
       json tests_hidden
-      json constraints  // lang, time/mem limits
+      json constraints
       int points
     }
 
@@ -69,18 +69,18 @@ erDiagram
       uuid id PK
       uuid problem_id FK
       uuid user_id FK
-      enum type // CODE | CODE_VOICE | NOTEBOOK
+      string type
       datetime submitted_at
       int attempt_number
-      enum status // QUEUED|RUNNING|PASSED|FAILED
+      string status
     }
 
     ARTIFACT {
       uuid id PK
       uuid submission_id FK
-      enum kind // CODE|LOG|AUDIO|TRANSCRIPT|RESULTS|DIFF
-      string uri  // signed URL
-      json meta   // language, duration, etc.
+      string kind
+      string uri
+      json meta
     }
 
     RUBRIC {
@@ -101,7 +101,7 @@ erDiagram
       uuid id PK
       uuid submission_id FK
       float score
-      json breakdown // per criterion/test
+      json breakdown
       datetime released_at
     }
 
@@ -110,7 +110,7 @@ erDiagram
       uuid submission_id FK
       uuid author_user_id FK
       text body
-      json inline_comments // file:line -> comment
+      json inline_comments
       datetime created_at
     }
 
@@ -132,8 +132,64 @@ erDiagram
     }
 ```
 
-**Notes**
-- **Code+Voice** is modeled by `SUBMISSION.type = CODE_VOICE` plus `ARTIFACT(kind = AUDIO | TRANSCRIPT)`.
-- Attempt history is the sequence of `SUBMISSION.attempt_number` per user/problem; diffs stored as `ARTIFACT(kind=DIFF)`.
-- Autograder outputs in `ARTIFACT(kind=RESULTS|LOG)`.
+## Enum Values
 
+### USER.role
+- `learner`
+- `instructor`
+- `admin`
+
+### ENROLLMENT.role
+- `learner`
+- `ta`
+- `instructor`
+
+### SUBMISSION.type
+- `CODE`
+- `CODE_VOICE`
+- `NOTEBOOK`
+
+### SUBMISSION.status
+- `QUEUED`
+- `RUNNING`
+- `PASSED`
+- `FAILED`
+
+### ARTIFACT.kind
+- `CODE`
+- `LOG`
+- `AUDIO`
+- `TRANSCRIPT`
+- `RESULTS`
+- `DIFF`
+
+## Notes
+
+- **Code+Voice** is modeled by `SUBMISSION.type = CODE_VOICE` plus `ARTIFACT(kind = AUDIO | TRANSCRIPT)`.
+- **Attempt history** is the sequence of `SUBMISSION.attempt_number` per user/problem; diffs stored as `ARTIFACT(kind=DIFF)`.
+- **Autograder outputs** in `ARTIFACT(kind=RESULTS|LOG)`.
+
+## Key Design Features
+
+### Flexible Submission Types
+The system supports multiple submission formats including traditional code, code with voice narration, and Jupyter notebooks.
+
+### Comprehensive Feedback System
+- Rubric-based grading with weighted criteria
+- Inline code comments (stored as JSON mapping file:line to comment)
+- General feedback text
+- Discussion comments
+
+### Artifact Storage
+Uses signed URLs (`uri` field) for efficient storage of large files with metadata support (language, duration, etc.).
+
+### Role Hierarchy
+- Global user roles (system-wide permissions)
+- Course-specific enrollment roles (course-level permissions)
+
+### Constraints and Policies
+- Problems support constraints (language requirements, time/memory limits)
+- Assignments support flexible late policies via JSON configuration
+
+### Attempt Tracking
+Built-in versioning with attempt numbers and diff storage for tracking changes between submissions.
