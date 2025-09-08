@@ -50,10 +50,10 @@ erDiagram
       int id
       int problem_id
       int user_id
-      string type // file|short_text|code+reflection
-      string file_uri // optional
-      text short_text // optional
-      text reflection // optional
+      string type
+      string file_uri
+      text short_text
+      text reflection
       datetime submitted_at
     }
 
