@@ -15,7 +15,7 @@ erDiagram
       int id
       string name
       string email
-      string role // student|instructor|admin
+      string role
     }
 
     COURSE {
