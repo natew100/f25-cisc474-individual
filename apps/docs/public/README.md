@@ -1,23 +1,12 @@
-# LMS Web App Planning — Deliverables Index (Nathan Wolf)
+# LMS Web App Planning — Index (Canvas-like, no voice)
 
-> **Repo path:** `apps/docs/public/`
+Vision: To create a flexible, user-friendly, and scalable Learning Management System that empowers learners, instructors, and administrators by providing a structured yet adaptable environment for managing programming problems structured around courses, assignments, submissions, and feedback. The LMS will support diverse learning needs, streamline administrative processes, and foster meaningful engagement between all roles in the system. You'll also need to add some kind of cool feature for a unique submission type.
 
-This page links to each required piece for the assignment.
+Deliverables for **Individual Web Application Planning** — Canvas Similar LMS System
 
-- **Requirements document (with user stories):** [`requirements.md`](./requirements.md)
-- **Site map (frontend pages):** [`sitemap.md`](./sitemap.md)
-- **Wireframes (major screens):** [`wireframes.md`](./wireframes.md)
-- **Basic data model diagram (major nouns):** [`data_model.md`](./data_model.md)
+- [Requirements](./requirements.md)
+- [Site Map](./sitemap.md)
+- [Wireframes](./wireframes.md)
+- [Data Model](./data_model.md)
 
-If a file covers more than one requirement, the section headings inside that file make the mapping explicit.
-
----
-
-## Unique Submission Type — “Code+Voice”
-This LMS includes a unique submission type called **Code+Voice**. Students submit their code **plus a 60–90s audio explanation** captured in‑app. The system stores:
-- Code snapshot (files, language, runtime)
-- Audio clip (transcribed for accessibility + search)
-- Autograder results (tests, runtime logs)
-- **Timeline of attempts** (commit-like history of runs) with deltas
-
-This is embedded throughout the deliverables: requirements, site map, wireframes, and the ERD.
+**Unique Submission Type:** **Code + Reflection** — along with a standard code/file upload, the student writes a brief (2–5 sentences) reflection on their approach or what they learned. This is plain text and stored with the submission for instructors to read.

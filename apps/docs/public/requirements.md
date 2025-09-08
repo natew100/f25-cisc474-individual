@@ -1,84 +1,41 @@
-# Requirements (with User Stories)
+# Requirements
 
-## Vision
-Create a flexible, user‑friendly, and scalable **Learning Management System** for programming courses that manages **courses, assignments, problems, submissions,** and **feedback**, with a unique **Code+Voice** submission type to deepen understanding and improve feedback quality.
+## Roles
 
----
-
-## Roles & High-Level Capabilities
-
-### Learner
-- Browse and enroll in courses (self-enroll or instructor invite)
-- View assignments, due dates, and grading rubrics
-- Work on programming problems in a built-in code editor & test runner
-- Submit solutions as:
-  - **Standard Code** (files, language/runtime)
-  - **Code+Voice** (code + 60–90s audio explanation recorded in-app)
-  - Notebook upload (ipynb) or external repo link (optional)
-- See autograder feedback (test results, runtime logs) and instructor comments
-- Resubmit until deadline (or with late penalty rules)
-- View grades, per‑test breakdown, and feedback history
-- Discuss in problem-level discussion threads
-- Receive notifications (due dates, feedback posted, test failures)
+### Student
+- Enroll in courses (join by code or instructor add)
+- View assignments and due dates
+- Submit solutions in allowed formats:
+  - Code/file upload
+  - **Code + Reflection** (code/file + short text explanation)
+  - Short-answer text (for quizzes/simple prompts)
+- View grades and instructor feedback
+- See submission history
 
 ### Instructor
-- Create and manage courses, enrollments, and sections
-- Create assignments composed of one or more programming problems
-- Author problems with:
-  - Starter code & hidden/public tests
-  - Constraints (language version, time limits, memory)
-  - Rubrics & points per test/problem
-- Choose allowed submission types per assignment (Code, **Code+Voice**, Notebook)
-- Configure autograder (container runtime, test suites)
-- Review submissions (diff view, run logs, **audio transcript**)
-- Leave feedback (inline comments, rubric scoring, audio feedback optional)
-- Regrade single test or whole assignment; post grade releases
-- Analytics: class-level progress, item analysis, late trends
+- Create/manage courses and enroll students
+- Create assignments and problems (title, prompt, points, due date)
+- Choose allowed submission types (code/file, **code+reflection**, short answer)
+- Review submissions, leave feedback, assign grades
+- Download submissions as a ZIP; export grades as CSV
 
-### Administrator
-- Manage users, roles, and SSO (e.g., campus IdP)
-- Global catalogs, terms/semesters, and course provisioning
-- Resource quotas & sandbox runtimes (Docker images)
-- Policy: late rules, plagiarism settings, retention
-- System health, queues, and grading workers
-- Compliance & exports (FERPA/GDPR), backups
+### Admin
+- Basic user and course management (create user, create course)
+- Reset passwords / set roles (student, instructor, admin)
 
 ---
 
-## Non-Functional Requirements
-- **Scalability:** handle 1k+ concurrent autograder jobs; queue-based workers
-- **Accessibility:** WCAG 2.2 AA; transcripts for all audio (**Code+Voice** auto-ASR)
-- **Security:** RBAC, least-privilege; signed URLs for artifacts; audit logs
-- **Reliability:** 99.9% for core UX; autograder job retry with idempotency keys
-- **Interoperability:** LTI 1.3, grade passback; export to CSV/JSON; webhook events
-- **Observability:** metrics (Prometheus), traces, structured logs
+## MVP Scope (1 semester)
+- Single web app + single database
+- Auth with sessions (login/register)
+- CRUD for courses, assignments, problems
+- Submissions (file upload, text, **code+reflection**)
+- Feedback + grade entry
+- Due date display and simple "late" indicator
+- Table views for instructors to review submissions
+- CSV export of grades
 
----
-
-## User Stories (Representative)
-
-### Learner Stories
-- As a learner, I can see all assignments with due dates so I can plan my week.
-- As a learner, I can submit **Code+Voice**, so the instructor understands my approach even when tests fail.
-- As a learner, I can view per‑test autograder output so I can fix failing cases quickly.
-- As a learner, I can see a history of my attempts (diffs) to reflect on progress.
-- As a learner, I receive notifications when feedback or grades are posted.
-
-### Instructor Stories
-- As an instructor, I can define a rubric with criteria and weights to grade consistently.
-- As an instructor, I can restrict submission types (e.g., **force Code+Voice** on “Explain your algorithm” tasks).
-- As an instructor, I can listen to the learner’s **audio explanation** and read its transcript.
-- As an instructor, I can leave inline comments on specific lines of code.
-- As an instructor, I can re-run tests on a submission after updating test cases.
-
-### Admin Stories
-- As an admin, I can bulk-provision courses for a term.
-- As an admin, I can configure compute quotas per course to control costs.
-- As an admin, I can review plagiarism reports across the institution.
-
----
-
-## Acceptance Criteria (Examples)
-- Given a published assignment with Code+Voice enabled, when a learner submits, **the audio is uploaded, transcribed, and associated** with the submission; transcript is searchable by the instructor.
-- Given a submission, the system **stores versioned artifacts** (code, logs, audio, transcript) and shows a **timeline of attempts** with diffs.
-- Given a rubric, the instructor can **grade per criterion** and the grade is computed and stored; learners see grade + rubric breakdown upon release.
+### Stretch (optional, time permitting)
+- Basic autograder stub for one language (e.g., Python tests) OR manual grade workflow only
+- Tags/filters for assignments
+- Per-problem rubric (simple point breakdown)

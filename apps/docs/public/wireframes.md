@@ -1,102 +1,69 @@
-# Wireframes (Major Screens)
+# Wireframes
 
-> Text wireframes shown for clarity. Keep layouts responsive and accessible.
-
----
-
-## 1) Dashboard
-
+## Dashboard
 ```
-+--------------------------------------------------------------+
-|  Top Nav:  Logo | Courses | Notifications | Profile          |
-+--------------------------------------------------------------+
-|  Welcome, Nathan                                            |
-|                                                              |
-|  [My Courses]                            [Upcoming Deadlines]|
-|  - CS101: Intro to Prog            - A1: Loops (Sep 15, 11:59)|
-|  - DS200: Data Structures          - Quiz 1 (Sep 18, 11:59)  |
-|                                                              |
-|  [Recent Feedback]                                          |
-|  - A0: Setup — 10/10, see comments                          |
-+--------------------------------------------------------------+
++------------------------------+
+| My Courses                   |
++------------------------------+
+| CS101  | DS200               |
++------------------------------+
+| Upcoming                     |
+| - HW1 due Sep 15 11:59pm     |
++------------------------------+
 ```
 
----
-
-## 2) Assignment Details
-
+## Course Home
 ```
-+--------------------------------------------------------------+
-|  Course > Assignments > A1: Loops                            |
-+--------------------------------------------------------------+
-|  Description | Problems | Rubric | Submissions               |
-+--------------------------------------------------------------+
-|  A1 Overview: implement loop-based problems.                 |
-|  Problems:                                                   |
-|   [P1] Sum of Evens   [Start]  [View]  Points: 20            |
-|   [P2] FizzBuzz       [Start]  [View]  Points: 20            |
-|                                                              |
-|  Due: Sep 15, 11:59 PM      Late Policy: 10%/day             |
-+--------------------------------------------------------------+
++------------------------------+
+| Course: CS101                |
++------------------------------+
+| Assignments                  |
+| - HW1  [View]                |
+| - HW2  [View]                |
++------------------------------+
+| Grades  [Open]               |
++------------------------------+
 ```
 
----
-
-## 3) Problem Workspace (Editor + Tests + **Code+Voice**)
-
+## Assignment Details
 ```
-+--------------------------------------------------------------+
-|  Problem: FizzBuzz (20 pts)                                  |
-+--------------------------------------------------------------+
-|  Left: Instructions / I/O Examples                           |
-|  Right: Code Editor (language select)                        |
-|                                                              |
-|  [Run Tests]  [Save Draft]  [Submit]                         |
-|                                                              |
-|  Submission Type: ( ) Code   (•) Code+Voice   ( ) Notebook   |
-|   - Record: [● REC]  00:45   - Transcript will be generated  |
-|                                                              |
-|  Test Output:                                                |
-|   - public_test_1 ✓                                          |
-|   - public_test_2 ✗ expected 'Fizz' got 'Fizz '              |
-+--------------------------------------------------------------+
++------------------------------+
+| HW1: Loops                   |
++------------------------------+
+| Problems                     |
+| 1) Sum of Evens  [Open]      |
+| 2) FizzBuzz       [Open]     |
++------------------------------+
+| Due: Sep 15, 11:59pm         |
++------------------------------+
 ```
 
----
-
-## 4) Submission Detail (Autograder + Audio + Feedback)
-
+## Problem Page / Submit
 ```
-+--------------------------------------------------------------+
-|  Submission #17 — A1 > FizzBuzz — Nathan                     |
-+--------------------------------------------------------------+
-|  Attempt Timeline:  #14  #15  #16  [#17]  #18                |
-|  Diff vs #16: +2/-1 lines                                    |
-|                                                              |
-|  Artifacts:  Code | Tests | Logs | Audio | Transcript        |
-|   Audio: ▶ Play (1:12)     Transcript: searchable text       |
-|                                                              |
-|  Rubric:                                                     |
-|   - Correctness (16/16)  - Style (2/2)  - Explanation (2/2)  |
-|  Instructor comments (inline + overall)                      |
-+--------------------------------------------------------------+
++------------------------------+
+| Problem: FizzBuzz            |
++------------------------------+
+| Prompt & examples            |
+|                              |
+| Submission Type:             |
+|  (•) Code/File Upload        |
+|  ( ) Short Answer Text       |
+|  (•) Code + Reflection       |
+|     - File: [Choose...]      |
+|     - Reflection: [textarea] |
+|                              |
+| [Submit]                     |
++------------------------------+
 ```
 
----
-
-## 5) Instructor — Assignment Builder
-
+## Submission Detail
 ```
-+--------------------------------------------------------------+
-|  New Assignment: A1                                          |
-+--------------------------------------------------------------+
-|  Problems: [Add Problem]                                     |
-|   - Starter code (repo/files)                                |
-|   - Tests: public/hidden                                     |
-|   - Rubric criteria + weights                                |
-|  Allowed Submission Types: [x] Code [x] Code+Voice [ ] Nb    |
-|  Autograder Runtime: Docker image, limits, timeout           |
-|  Publish [ ]  Grade release [manual/auto]                    |
-+--------------------------------------------------------------+
++------------------------------+
+| Submission #5 - FizzBuzz     |
++------------------------------+
+| Files: fizzbuzz.py           |
+| Reflection: "Used mod math." |
+| Feedback: "Nice start."      |
+| Grade: 8/10                  |
++------------------------------+
 ```
-
