@@ -34,6 +34,8 @@
 - Due date display and simple "late" indicator
 - Table views for instructors to review submissions
 - CSV export of grades
+- Task Tracking
+- Unified Document system for common accessed documents for students + instructors
 
 ### Stretch (optional, time permitting)
 - Basic autograder stub for one language (e.g., Python tests) OR manual grade workflow only

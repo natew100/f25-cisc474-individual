@@ -12,7 +12,7 @@
 +------------------------------+
 ```
 
-## Course Home
+## Individual Course Detail Home
 ```
 +------------------------------+
 | Course: CS101                |
