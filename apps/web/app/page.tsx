@@ -1,70 +1,37 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
-
-type Props = Omit<ImageProps, "src"> & {
-    srcLight: string;
-    srcDark: string;
-};
-
-const ThemeImage = (props: Props) => {
-    const { srcLight, srcDark, ...rest } = props;
-
-    return (
-        <>
-            <Image {...rest} src={srcLight} className="imgLight" />
-            <Image {...rest} src={srcDark} className="imgDark" />
-        </>
-    );
-};
+import Link from 'next/link'
 
 export default function Home() {
-    return (
-        <div className={styles.page}>
-            <main className={styles.main}>
-                <h1>CISC474 Project Starter</h1>
-                <ol>
-                    <li>
-                        Get started by editing{" "}
-                        <code>apps/web/app/page.tsx</code>
-                    </li>
-                    <li>Save and see your changes instantly.</li>
-                </ol>
+  return (
+    <>
+      <h1>Welcome to Mini Canvas LMS</h1>
+      <p>Your simple learning management system for courses and assignments.</p>
+      
+      <div style={{ marginTop: '2rem' }}>
+        <Link href="/courses" className="button">
+          View All Courses
+        </Link>
+        <Link href="/assignments" className="button">
+          View All Assignments
+        </Link>
+      </div>
 
-                <Button appName="web" className={styles.secondary}>
-                    Open alert
-                </Button>
-            </main>
-            <footer className={styles.footer}>
-                <a
-                    href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <Image
-                        aria-hidden
-                        src="/window.svg"
-                        alt="Window icon"
-                        width={16}
-                        height={16}
-                    />
-                    Examples
-                </a>
-                <a
-                    href="https://turborepo.com?utm_source=create-turbo"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <Image
-                        aria-hidden
-                        src="/globe.svg"
-                        alt="Globe icon"
-                        width={16}
-                        height={16}
-                    />
-                    Go to turborepo.com →
-                </a>
-            </footer>
+      <section style={{ marginTop: '3rem' }}>
+        <h2>Featured Courses</h2>
+        <div className="card">
+          <h3>CS 101: Introduction to Programming</h3>
+          <p>Learn the fundamentals of programming with Python.</p>
+          <Link href="/courses/101" className="link">
+            View Course →
+          </Link>
         </div>
-    );
+        <div className="card">
+          <h3>CS 202: Web Development</h3>
+          <p>Build modern web applications with HTML, CSS, and JavaScript.</p>
+          <Link href="/courses/202" className="link">
+            View Course →
+          </Link>
+        </div>
+      </section>
+    </>
+  )
 }
