@@ -3,8 +3,8 @@ import './globals.css'
 import NavBar from '@/components/NavBar'
 
 export const metadata: Metadata = {
-  title: 'Mini Canvas LMS',
-  description: 'A minimal Canvas-like LMS demo',
+  title: 'EduFlow',
+  description: 'A modern Learning Management System',
 }
 
 export default function RootLayout({

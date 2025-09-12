@@ -1,6 +1,6 @@
-# Mini Canvas LMS
+# EduFlow
 
-A minimal Canvas-like Learning Management System demo built with Next.js 14+ App Router and TypeScript.
+A modern Learning Management System built with Next.js 14+ App Router and TypeScript.
 
 ## Features
 

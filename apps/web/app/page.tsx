@@ -3,7 +3,7 @@ import Link from 'next/link'
 export default function Home() {
   return (
     <>
-      <h1>Welcome to Mini Canvas LMS</h1>
+      <h1>Welcome to EduFlow</h1>
       <p>Your simple learning management system for courses and assignments.</p>
       
       <div style={{ marginTop: '2rem' }}>

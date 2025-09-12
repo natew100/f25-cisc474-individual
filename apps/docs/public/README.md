@@ -2,7 +2,7 @@
 
 Vision: To create a flexible, user-friendly, and scalable Learning Management System that empowers learners, instructors, and administrators by providing a structured yet adaptable environment for managing programming problems structured around courses, assignments, submissions, and feedback. The LMS will support diverse learning needs, streamline administrative processes, and foster meaningful engagement between all roles in the system. You'll also need to add some kind of cool feature for a unique submission type.
 
-Deliverables for **Individual Web Application Planning** — Canvas Similar LMS System
+Deliverables for **Individual Web Application Planning** — EduFlow LMS System
 
 - [Requirements](./requirements.md)
 - [Site Map](./sitemap.md)

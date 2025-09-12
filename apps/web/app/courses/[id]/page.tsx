@@ -31,8 +31,9 @@ const coursesData = {
   }
 }
 
-export default function CourseDetailPage({ params }: { params: { id: string } }) {
-  const course = coursesData[params.id as keyof typeof coursesData]
+export default async function CourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const course = coursesData[id as keyof typeof coursesData]
   
   if (!course) {
     return (

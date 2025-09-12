@@ -27,8 +27,9 @@ const assignmentsData = {
   }
 }
 
-export default function AssignmentDetailPage({ params }: { params: { id: string } }) {
-  const assignment = assignmentsData[params.id as keyof typeof assignmentsData]
+export default async function AssignmentDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const assignment = assignmentsData[id as keyof typeof assignmentsData]
   
   if (!assignment) {
     return (
