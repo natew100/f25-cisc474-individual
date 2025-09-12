@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+// Fake course details with assignments - in real app this would be fetched from DB
 const coursesData = {
   '101': {
     title: 'CS 101: Introduction to Programming',
@@ -32,9 +33,11 @@ const coursesData = {
 }
 
 export default async function CourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  // Next.js 15 requires awaiting params in dynamic routes
   const { id } = await params
   const course = coursesData[id as keyof typeof coursesData]
   
+  // Handle course not found
   if (!course) {
     return (
       <>

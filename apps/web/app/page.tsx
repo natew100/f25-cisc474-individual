@@ -6,6 +6,7 @@ export default function Home() {
       <h1>Welcome to EduFlow</h1>
       <p>Your simple learning management system for courses and assignments.</p>
       
+      {/* Quick navigation to main sections */}
       <div style={{ marginTop: '2rem' }}>
         <Link href="/courses" className="button">
           View All Courses
@@ -15,6 +16,7 @@ export default function Home() {
         </Link>
       </div>
 
+      {/* Show a couple featured courses to get started */}
       <section style={{ marginTop: '3rem' }}>
         <h2>Featured Courses</h2>
         <div className="card">

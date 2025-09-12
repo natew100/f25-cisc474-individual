@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+// Mock data for available courses - would come from database in production
 const courses = [
   { id: '101', title: 'CS 101: Introduction to Programming', description: 'Learn the fundamentals of programming with Python.' },
   { id: '202', title: 'CS 202: Web Development', description: 'Build modern web applications with HTML, CSS, and JavaScript.' },
@@ -13,6 +14,7 @@ export default function CoursesPage() {
       <p>Explore our available courses for this semester.</p>
       
       <div style={{ marginTop: '2rem' }}>
+        {/* Loop through each course and display as a card */}
         {courses.map((course) => (
           <div key={course.id} className="card">
             <h3>{course.title}</h3>

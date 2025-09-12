@@ -1,5 +1,6 @@
 import Link from 'next/link'
 
+// Detailed assignment info with prompts and metadata
 const assignmentsData = {
   '1': {
     title: 'Hello World Program',
@@ -28,9 +29,11 @@ const assignmentsData = {
 }
 
 export default async function AssignmentDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  // Get the assignment ID from the URL
   const { id } = await params
   const assignment = assignmentsData[id as keyof typeof assignmentsData]
   
+  // Show error page if assignment doesn't exist
   if (!assignment) {
     return (
       <>
@@ -52,6 +55,7 @@ export default async function AssignmentDetailPage({ params }: { params: Promise
         <p><strong>Due Date:</strong> {assignment.dueDate}</p>
       </div>
       
+      {/* The actual assignment instructions */}
       <section style={{ marginTop: '2rem' }}>
         <h2>Assignment Prompt</h2>
         <div className="card">
@@ -59,6 +63,7 @@ export default async function AssignmentDetailPage({ params }: { params: Promise
         </div>
       </section>
       
+      {/* Navigation back to course or assignment list */}
       <div style={{ marginTop: '2rem' }}>
         <Link href={`/courses/${assignment.courseId}`} className="back-link">
           ← Back to Course
