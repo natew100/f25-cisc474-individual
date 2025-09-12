@@ -1,7 +1,22 @@
 import Link from 'next/link'
 
+// Define types for better type safety
+type CourseId = '101' | '202' | '303'
+
+interface Assignment {
+  id: string
+  title: string
+}
+
+interface Course {
+  title: string
+  description: string
+  instructor: string
+  assignments: Assignment[]
+}
+
 // Fake course details with assignments - in real app this would be fetched from DB
-const coursesData = {
+const coursesData: Record<CourseId, Course> = {
   '101': {
     title: 'CS 101: Introduction to Programming',
     description: 'Learn the fundamentals of programming with Python.',
@@ -35,7 +50,7 @@ const coursesData = {
 export default async function CourseDetailPage({ params }: { params: Promise<{ id: string }> }) {
   // Next.js 15 requires awaiting params in dynamic routes
   const { id } = await params
-  const course = coursesData[id as keyof typeof coursesData]
+  const course = coursesData[id as CourseId]
   
   // Handle course not found
   if (!course) {

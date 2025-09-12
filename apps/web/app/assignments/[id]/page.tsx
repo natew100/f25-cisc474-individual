@@ -1,7 +1,19 @@
 import Link from 'next/link'
 
+// Define types for better type safety
+type AssignmentId = '1' | '2' | '3'
+
+interface AssignmentDetail {
+  title: string
+  courseId: string
+  courseName: string
+  points: number
+  dueDate: string
+  prompt: string
+}
+
 // Detailed assignment info with prompts and metadata
-const assignmentsData = {
+const assignmentsData: Record<AssignmentId, AssignmentDetail> = {
   '1': {
     title: 'Hello World Program',
     courseId: '101',
@@ -31,7 +43,7 @@ const assignmentsData = {
 export default async function AssignmentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   // Get the assignment ID from the URL
   const { id } = await params
-  const assignment = assignmentsData[id as keyof typeof assignmentsData]
+  const assignment = assignmentsData[id as AssignmentId]
   
   // Show error page if assignment doesn't exist
   if (!assignment) {
