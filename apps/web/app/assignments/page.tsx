@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-// Sample assignment list with due dates
+// Sample assignment list with due dates - AI generated mock data
 const assignments = [
   { id: '1', title: 'Hello World Program', course: 'CS 101', dueDate: 'Feb 15, 2024' },
   { id: '2', title: 'Variables and Data Types', course: 'CS 101', dueDate: 'Feb 22, 2024' },

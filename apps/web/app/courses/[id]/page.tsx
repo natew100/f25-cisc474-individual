@@ -15,7 +15,7 @@ interface Course {
   assignments: Assignment[]
 }
 
-// Fake course details with assignments - in real app this would be fetched from DB
+// AI-generated fake course details with assignments - in real app this would be fetched from DB
 const coursesData: Record<CourseId, Course> = {
   '101': {
     title: 'CS 101: Introduction to Programming',

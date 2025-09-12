@@ -12,7 +12,7 @@ interface AssignmentDetail {
   prompt: string
 }
 
-// Detailed assignment info with prompts and metadata
+// AI-generated detailed assignment info with prompts and metadata
 const assignmentsData: Record<AssignmentId, AssignmentDetail> = {
   '1': {
     title: 'Hello World Program',
