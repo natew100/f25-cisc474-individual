@@ -1,0 +1,3 @@
+id,assignmentId,title,prompt,points,orderIndex
+b30ed89a-e061-427a-b8eb-5bf81d684df0,c9a9066d-9e46-478a-ad99-2b7bd8b7be13,Calculator,Create a simple calculator function,20,2
+db0635c7-76c7-4be1-9f9b-eb018969f687,c9a9066d-9e46-478a-ad99-2b7bd8b7be13,Hello World,"Write a program that prints 'Hello, World!'",10,1

@@ -1,0 +1,4 @@
+id,problemId,userId,type,fileUri,shortText,code,reflection,submittedAt,updatedAt
+8bf4edd9-831c-4ec7-b3ad-ccf7b73f5124,db0635c7-76c7-4be1-9f9b-eb018969f687,1b6657dd-f8b1-4713-be6b-b711925b3070,CODE_REFLECTION,,,"print(""Hello, World!"")",This is my first Python program!,2025-09-19 18:18:58.432,2025-09-19 18:18:58.432
+d057101d-6155-4734-b4ca-a3d3a0d627f3,b30ed89a-e061-427a-b8eb-5bf81d684df0,1b6657dd-f8b1-4713-be6b-b711925b3070,FILE,/uploads/calculator.py,,,,2025-09-19 18:18:58.634,2025-09-19 18:18:58.634
+e0415637-0089-413c-bd1a-2aab85c12173,db0635c7-76c7-4be1-9f9b-eb018969f687,17a923de-5558-4ba0-947b-357492392960,SHORT_TEXT,,I would use print() function to display Hello World,,,2025-09-19 18:18:58.529,2025-09-19 18:18:58.529

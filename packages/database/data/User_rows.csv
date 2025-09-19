@@ -1,0 +1,5 @@
+id,name,email,role,createdAt,updatedAt
+17a923de-5558-4ba0-947b-357492392960,Jane Smith,jane.smith@student.edu,STUDENT,2025-09-19 18:18:57.897,2025-09-19 18:18:57.897
+1b6657dd-f8b1-4713-be6b-b711925b3070,John Doe,john.doe@student.edu,STUDENT,2025-09-19 18:18:57.821,2025-09-19 18:18:57.821
+6198ebdd-14c6-48d7-ad12-c695e90eeb05,Dr. Sarah Johnson,sarah.johnson@eduflow.edu,INSTRUCTOR,2025-09-19 18:18:57.787,2025-09-19 18:18:57.787
+8e82a01b-cfd6-4367-adf2-c03407cb9c81,Admin User,admin@eduflow.edu,ADMIN,2025-09-19 18:18:57.68,2025-09-19 18:18:57.68
