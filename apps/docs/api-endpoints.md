@@ -1,147 +1,38 @@
 # API Endpoints Documentation
 
-This document contains all the available API endpoints for the LMS (Learning Management System) backend application.
-
 ## Base URL
+https://f25-cisc474-individual-uiof.onrender.com
 
-**Local Development:** `http://localhost:3000`
-**Production (Render):** `https://api-[YOUR-RENDER-ID].onrender.com`
+## Endpoints
 
-> Note: Replace `[YOUR-RENDER-ID]` with your actual Render deployment ID
+### Users
+- [Get all users](https://f25-cisc474-individual-uiof.onrender.com/users)
+- [Get user by ID](https://f25-cisc474-individual-uiof.onrender.com/users/8e82a01b-cfd6-4367-adf2-c03407cb9c81)
 
-## Available Endpoints
+### Courses
+- [Get all courses](https://f25-cisc474-individual-uiof.onrender.com/courses)
+- [Get course by ID](https://f25-cisc474-individual-uiof.onrender.com/courses/5668a9a8-77b3-4f4e-a916-f04f2c8afcc4)
 
-Each database table has two endpoints:
-1. GET all records from the table
-2. GET a specific record by its ID
+### Enrollments
+- [Get all enrollments](https://f25-cisc474-individual-uiof.onrender.com/enrollments)
+- [Get enrollment by ID](https://f25-cisc474-individual-uiof.onrender.com/enrollments/bb34c113-7bbc-48dd-8563-d920c9045a27)
 
-### Users Endpoints
+### Assignments
+- [Get all assignments](https://f25-cisc474-individual-uiof.onrender.com/assignments)
+- [Get assignment by ID](https://f25-cisc474-individual-uiof.onrender.com/assignments/c9a9066d-9e46-478a-ad99-2b7bd8b7be13)
 
-- **Get all users**
-  `GET /users`
-  Returns all users with their related data (enrollments, owned courses, submissions, and feedback)
+### Problems
+- [Get all problems](https://f25-cisc474-individual-uiof.onrender.com/problems)
+- [Get problem by ID](https://f25-cisc474-individual-uiof.onrender.com/problems/db0635c7-76c7-4be1-9f9b-eb018969f687)
 
-- **Get user by ID**
-  `GET /users/:id`
-  Returns a specific user with all their related data
+### Submissions
+- [Get all submissions](https://f25-cisc474-individual-uiof.onrender.com/submissions)
+- [Get submission by ID](https://f25-cisc474-individual-uiof.onrender.com/submissions/8bf4edd9-831c-4ec7-b3ad-ccf7b73f5124)
 
-### Courses Endpoints
+### Feedback
+- [Get all feedback](https://f25-cisc474-individual-uiof.onrender.com/feedback)
+- [Get feedback by ID](https://f25-cisc474-individual-uiof.onrender.com/feedback/2f1bc61b-dedc-4684-99c6-4c9592746eda)
 
-- **Get all courses**
-  `GET /courses`
-  Returns all courses with instructor information, enrollments, and assignments
-
-- **Get course by ID**
-  `GET /courses/:id`
-  Returns a specific course with all its related data
-
-### Enrollments Endpoints
-
-- **Get all enrollments**
-  `GET /enrollments`
-  Returns all enrollment records with user and course information
-
-- **Get enrollment by ID**
-  `GET /enrollments/:id`
-  Returns a specific enrollment record
-
-### Assignments Endpoints
-
-- **Get all assignments**
-  `GET /assignments`
-  Returns all assignments with their course and problems
-
-- **Get assignment by ID**
-  `GET /assignments/:id`
-  Returns a specific assignment with all its problems
-
-### Problems Endpoints
-
-- **Get all problems**
-  `GET /problems`
-  Returns all problems with their assignment and submissions
-
-- **Get problem by ID**
-  `GET /problems/:id`
-  Returns a specific problem with its submissions
-
-### Submissions Endpoints
-
-- **Get all submissions**
-  `GET /submissions`
-  Returns all submissions with problem, user, feedback, and grade information
-
-- **Get submission by ID**
-  `GET /submissions/:id`
-  Returns a specific submission with all its related data
-
-### Feedback Endpoints
-
-- **Get all feedback**
-  `GET /feedback`
-  Returns all feedback entries with submission and author information
-
-- **Get feedback by ID**
-  `GET /feedback/:id`
-  Returns a specific feedback entry
-
-### Grades Endpoints
-
-- **Get all grades**
-  `GET /grades`
-  Returns all grades with their submission information
-
-- **Get grade by ID**
-  `GET /grades/:id`
-  Returns a specific grade record
-
-## Example Usage
-
-### Local Development
-
-```bash
-# Get all users
-curl http://localhost:3000/users
-
-# Get a specific course
-curl http://localhost:3000/courses/5668a9a8-77b3-4f4e-a916-f04f2c8afcc4
-
-# Get all assignments
-curl http://localhost:3000/assignments
-```
-
-### Production (Render)
-
-```bash
-# Get all users (replace with your actual Render URL)
-curl https://api-xxxx.onrender.com/users
-
-# Get a specific course
-curl https://api-xxxx.onrender.com/courses/5668a9a8-77b3-4f4e-a916-f04f2c8afcc4
-
-# Get all assignments
-curl https://api-xxxx.onrender.com/assignments
-```
-
-## Response Format
-
-All endpoints return JSON data. The structure includes:
-- For "get all" endpoints: An array of objects
-- For "get by id" endpoints: A single object or null if not found
-
-## Related Data
-
-Most endpoints include related data through Prisma's `include` feature:
-- **Users**: Include enrollments, owned courses, submissions, and feedback
-- **Courses**: Include instructor, enrollments, and assignments
-- **Assignments**: Include course and problems
-- **Problems**: Include assignment and submissions
-- **Submissions**: Include problem, user, feedback, and grade
-- **Enrollments**: Include user and course
-- **Feedback**: Include submission and author
-- **Grades**: Include submission
-
-## Error Handling
-
-- **404 Not Found**: When requesting a specific ID that doesn't exist
-- **500 Internal Server Error**: When there's a database connection issue or server error
+### Grades
+- [Get all grades](https://f25-cisc474-individual-uiof.onrender.com/grades)
+- [Get grade by ID](https://f25-cisc474-individual-uiof.onrender.com/grades/29850a06-362b-49f3-8a13-d627f384007a)
