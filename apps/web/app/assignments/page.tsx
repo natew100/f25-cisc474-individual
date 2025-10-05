@@ -1,31 +1,31 @@
-import Link from 'next/link'
+import { Suspense } from 'react';
+import AssignmentsList from '@/components/AssignmentsList';
+import { Card, CardContent } from '@/components/ui/card';
 
-// Sample assignment list with due dates - AI generated mock data
-const assignments = [
-  { id: '1', title: 'Hello World Program', course: 'CS 101', dueDate: 'Feb 15, 2024' },
-  { id: '2', title: 'Variables and Data Types', course: 'CS 101', dueDate: 'Feb 22, 2024' },
-  { id: '3', title: 'Loops and Conditionals', course: 'CS 101', dueDate: 'Mar 1, 2024' }
-]
+function AssignmentsLoadingFallback() {
+  return (
+    <Card>
+      <CardContent className="flex items-center gap-4 pt-6">
+        <div className="w-8 h-8 border-4 border-muted border-t-primary rounded-full animate-spin" />
+        <p className="text-sm text-muted-foreground">Loading assignments...</p>
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function AssignmentsPage() {
   return (
-    <>
-      <h1>All Assignments</h1>
-      <p>View and manage your upcoming assignments.</p>
-      
-      {/* Display each assignment as a card with key info */}
-      <div style={{ marginTop: '2rem' }}>
-        {assignments.map((assignment) => (
-          <div key={assignment.id} className="card">
-            <h3>{assignment.title}</h3>
-            <p><strong>Course:</strong> {assignment.course}</p>
-            <p><strong>Due:</strong> {assignment.dueDate}</p>
-            <Link href={`/assignments/${assignment.id}`} className="link">
-              View Assignment →
-            </Link>
-          </div>
-        ))}
+    <div className="space-y-6">
+      <div className="space-y-1">
+        <h1 className="text-3xl font-bold tracking-tight">Assignments</h1>
+        <p className="text-muted-foreground">
+          View and manage your upcoming assignments
+        </p>
       </div>
-    </>
-  )
+
+      <Suspense fallback={<AssignmentsLoadingFallback />}>
+        <AssignmentsList />
+      </Suspense>
+    </div>
+  );
 }

@@ -1,89 +1,74 @@
-import Link from 'next/link'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Calendar, BookOpen, Info } from 'lucide-react';
+import Link from 'next/link';
 
-// Define types for better type safety
-type AssignmentId = '1' | '2' | '3'
-
-interface AssignmentDetail {
-  title: string
-  courseId: string
-  courseName: string
-  points: number
-  dueDate: string
-  prompt: string
-}
-
-// AI-generated detailed assignment info with prompts and metadata
-const assignmentsData: Record<AssignmentId, AssignmentDetail> = {
-  '1': {
-    title: 'Hello World Program',
-    courseId: '101',
-    courseName: 'CS 101: Introduction to Programming',
-    points: 10,
-    dueDate: 'February 15, 2024',
-    prompt: 'Write a simple Python program that prints "Hello, World!" to the console. This is your first programming assignment to get familiar with Python syntax and running programs.'
-  },
-  '2': {
-    title: 'Variables and Data Types',
-    courseId: '101',
-    courseName: 'CS 101: Introduction to Programming',
-    points: 20,
-    dueDate: 'February 22, 2024',
-    prompt: 'Create a Python program that demonstrates the use of different data types (int, float, string, boolean) and performs basic operations with variables. Include comments explaining each data type.'
-  },
-  '3': {
-    title: 'Loops and Conditionals',
-    courseId: '101',
-    courseName: 'CS 101: Introduction to Programming',
-    points: 30,
-    dueDate: 'March 1, 2024',
-    prompt: 'Build a program that uses loops (for and while) and conditional statements (if/elif/else) to solve a problem. Create a simple number guessing game where the user has to guess a random number.'
-  }
-}
-
-export default async function AssignmentDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  // Get the assignment ID from the URL
-  const { id } = await params
-  const assignment = assignmentsData[id as AssignmentId]
-  
-  // Show error page if assignment doesn't exist
-  if (!assignment) {
-    return (
-      <>
-        <h1>Assignment Not Found</h1>
-        <p>The assignment you are looking for does not exist.</p>
-        <Link href="/assignments" className="back-link">
+export default function AssignmentDetailPage({ params }: { params: { id: string } }) {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center gap-2">
+        <Link href="/assignments" className="text-sm text-muted-foreground hover:text-primary">
           ← Back to Assignments
         </Link>
-      </>
-    )
-  }
+      </div>
 
-  return (
-    <>
-      <h1>{assignment.title}</h1>
-      <div className="card">
-        <p><strong>Course:</strong> {assignment.courseName}</p>
-        <p><strong>Points:</strong> {assignment.points}</p>
-        <p><strong>Due Date:</strong> {assignment.dueDate}</p>
-      </div>
-      
-      {/* The actual assignment instructions */}
-      <section style={{ marginTop: '2rem' }}>
-        <h2>Assignment Prompt</h2>
-        <div className="card">
-          <p>{assignment.prompt}</p>
-        </div>
-      </section>
-      
-      {/* Navigation back to course or assignment list */}
-      <div style={{ marginTop: '2rem' }}>
-        <Link href={`/courses/${assignment.courseId}`} className="back-link">
-          ← Back to Course
-        </Link>
-        <Link href="/assignments" className="back-link" style={{ marginLeft: '2rem' }}>
-          ← Back to All Assignments
-        </Link>
-      </div>
-    </>
-  )
+      <Card className="border-dashed">
+        <CardHeader className="space-y-4">
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-2">
+              <Badge variant="secondary">PLACEHOLDER</Badge>
+              <CardTitle className="text-2xl">Assignment Details</CardTitle>
+              <CardDescription>
+                Assignment ID: {params.id}
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="bg-muted/50 rounded-lg p-6 space-y-4">
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Info className="w-5 h-5" />
+              <p className="text-sm font-medium">Detailed view coming soon</p>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              This page will display comprehensive assignment information once the backend API provides additional details such as:
+            </p>
+            <ul className="text-sm text-muted-foreground space-y-2 ml-6 list-disc">
+              <li>Complete assignment description and requirements</li>
+              <li>Submission guidelines and format</li>
+              <li>Grading rubric and point values</li>
+              <li>Related materials and resources</li>
+              <li>Submission history and status</li>
+            </ul>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-muted-foreground" />
+                  <CardTitle className="text-sm">Due Date</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-muted-foreground">Available when backend provides data</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-2">
+                  <BookOpen className="w-4 h-4 text-muted-foreground" />
+                  <CardTitle className="text-sm">Course</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-xs text-muted-foreground">Available when backend provides data</p>
+              </CardContent>
+            </Card>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 }
