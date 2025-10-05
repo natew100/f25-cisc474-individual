@@ -3,7 +3,9 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, BookOpen, Info } from 'lucide-react';
 import Link from 'next/link';
 
-export default function AssignmentDetailPage({ params }: { params: { id: string } }) {
+export default async function AssignmentDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
@@ -19,7 +21,7 @@ export default function AssignmentDetailPage({ params }: { params: { id: string 
               <Badge variant="secondary">PLACEHOLDER</Badge>
               <CardTitle className="text-2xl">Assignment Details</CardTitle>
               <CardDescription>
-                Assignment ID: {params.id}
+                Assignment ID: {id}
               </CardDescription>
             </div>
           </div>
