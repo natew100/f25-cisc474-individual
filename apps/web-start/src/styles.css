@@ -1,15 +1,40 @@
 @import "tailwindcss";
 
-body {
-    @apply m-0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-        sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+@theme {
+  --color-background: oklch(100% 0 0);
+  --color-foreground: oklch(9% 0.022 285.885);
+  --color-card: oklch(100% 0 0);
+  --color-card-foreground: oklch(9% 0.022 285.885);
+  --color-popover: oklch(100% 0 0);
+  --color-popover-foreground: oklch(9% 0.022 285.885);
+  --color-primary: oklch(55.66% 0.216 264.364);
+  --color-primary-foreground: oklch(98% 0 0);
+  --color-secondary: oklch(96.1% 0.003 286.375);
+  --color-secondary-foreground: oklch(15% 0.012 285.885);
+  --color-muted: oklch(96.1% 0.003 286.375);
+  --color-muted-foreground: oklch(52% 0.014 285.885);
+  --color-accent: oklch(96.1% 0.003 286.375);
+  --color-accent-foreground: oklch(15% 0.012 285.885);
+  --color-destructive: oklch(61.21% 0.233 27.325);
+  --color-destructive-foreground: oklch(98% 0 0);
+  --color-border: oklch(91.4% 0.006 286.375);
+  --color-input: oklch(91.4% 0.006 286.375);
+  --color-ring: oklch(55.66% 0.216 264.364);
+  --radius: 0.5rem;
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-        monospace;
+@layer base {
+  * {
+    border-color: oklch(var(--color-border));
+  }
+  body {
+    background-color: oklch(var(--color-background));
+    color: oklch(var(--color-foreground));
+  }
+}
+
+@layer components {
+  .main-container {
+    @apply flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full;
+  }
 }

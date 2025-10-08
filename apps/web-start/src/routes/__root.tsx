@@ -11,6 +11,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools';
 import TanStackQueryDevtools from '../integrations/devtools';
 import appCss from '../styles.css?url';
 import type { QueryClient } from '@tanstack/react-query';
+import NavBar from '../components/NavBar';
 
 export interface MyRouterContext {
   queryClient: QueryClient;
@@ -27,7 +28,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'EduFlow',
       },
     ],
     links: [
@@ -37,6 +38,15 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
+
+  component: () => (
+    <div className="min-h-screen flex flex-col">
+      <NavBar />
+      <main className="main-container">
+        <Outlet />
+      </main>
+    </div>
+  ),
 
   shellComponent: RootDocument,
 });
