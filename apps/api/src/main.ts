@@ -19,8 +19,12 @@ async function bootstrap() {
       // Allow requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);
 
-      // Check if the origin is in the allowed list or matches a Vercel preview URL
-      if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      // Check if the origin is in the allowed list or matches a Vercel/Cloudflare URL
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        origin.endsWith('.workers.dev')
+      ) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
