@@ -10,6 +10,11 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config = defineConfig({
+  define: {
+    'import.meta.env.VITE_BACKEND_URL': JSON.stringify(
+      process.env.VITE_BACKEND_URL || 'http://localhost:3000'
+    ),
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

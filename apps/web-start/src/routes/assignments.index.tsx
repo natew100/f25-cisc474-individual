@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
-import { serverFetch } from '../integrations/server-fetcher';
+import { backendFetcher } from '../integrations/fetcher';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Calendar, Database } from 'lucide-react';
@@ -35,7 +35,7 @@ function AssignmentsLoadingFallback() {
 function AssignmentsPage() {
   const { data: assignments, isLoading, error } = useQuery<Assignment[]>({
     queryKey: ['assignments'],
-    queryFn: () => serverFetch<Assignment[]>('/assignments'),
+    queryFn: backendFetcher<Assignment[]>('/assignments'),
   });
 
   return (
