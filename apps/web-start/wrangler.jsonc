@@ -3,8 +3,5 @@
   "name": "tanstack-start-app",
   "compatibility_date": "2025-09-02",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry",
-  "vars": {
-    "VITE_BACKEND_URL": "https://f25-cisc474-individual-uiof.onrender.com"
-  }
+  "main": "@tanstack/react-start/server-entry"
 }
