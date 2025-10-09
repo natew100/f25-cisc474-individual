@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useQuery } from '@tanstack/react-query';
-import { backendFetcher } from '../integrations/fetcher';
+import { serverFetch } from '../integrations/server-fetcher';
 import { Link } from '@tanstack/react-router';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
@@ -36,7 +36,7 @@ function CoursesLoadingFallback() {
 function CoursesPage() {
   const { data: courses, isLoading, error } = useQuery<Course[]>({
     queryKey: ['courses'],
-    queryFn: backendFetcher<Course[]>('/courses'),
+    queryFn: () => serverFetch<Course[]>('/courses'),
   });
 
   return (
