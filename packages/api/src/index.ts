@@ -12,3 +12,6 @@ export const links = {
     Link,
   },
 };
+
+// Export course DTOs
+export * from './courses';

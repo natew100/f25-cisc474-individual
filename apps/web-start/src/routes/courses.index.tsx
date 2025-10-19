@@ -1,26 +1,21 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useQuery } from '@tanstack/react-query';
-import { backendFetcher } from '../integrations/fetcher';
-import { Link } from '@tanstack/react-router';
+import { createFileRoute, useNavigate, Link } from '@tanstack/react-router';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { backendFetcher, mutateBackend } from '../integrations/fetcher';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { User, Database } from 'lucide-react';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Textarea } from '../components/ui/textarea';
+import { User, Database, Plus, Edit, Trash2, AlertTriangle, X } from 'lucide-react';
+import { CourseOut } from '@repo/api';
 
 export const Route = createFileRoute('/courses/')({
   component: CoursesPage,
 });
 
-interface Course {
-  id: string;
-  title: string;
-  description: string | null;
-  code: string;
-  instructor: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
+// Using CourseOut from @repo/api instead of local interface
+type Course = CourseOut;
 
 function CoursesLoadingFallback() {
   return (
@@ -33,19 +28,283 @@ function CoursesLoadingFallback() {
   );
 }
 
+function EditModal({
+  isOpen,
+  onClose,
+  onSave,
+  course,
+  isSaving,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (data: { title: string; code: string; description: string }) => void;
+  course: Course | null;
+  isSaving: boolean;
+}) {
+  const [title, setTitle] = useState(course?.title || '');
+  const [code, setCode] = useState(course?.code || '');
+  const [description, setDescription] = useState(course?.description || '');
+
+  if (!isOpen || !course) return null;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSave({
+      title,
+      code,
+      description,
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Modal */}
+      <Card className="relative z-10 w-full max-w-2xl mx-4 shadow-xl max-h-[90vh] overflow-y-auto">
+        <CardHeader className="pb-4">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-full">
+                <Edit className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <CardTitle className="text-lg">Edit Course</CardTitle>
+                <CardDescription className="mt-1">
+                  Update course information
+                </CardDescription>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-muted rounded-sm transition-colors"
+              disabled={isSaving}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="title" className="text-sm font-medium">
+                Title
+              </label>
+              <Input
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter course title"
+                required
+                disabled={isSaving}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="code" className="text-sm font-medium">
+                Code
+              </label>
+              <Input
+                id="code"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="e.g., CS101"
+                required
+                disabled={isSaving}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="description" className="text-sm font-medium">
+                Description
+              </label>
+              <Textarea
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Enter course description"
+                rows={4}
+                disabled={isSaving}
+              />
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onClose}
+                disabled={isSaving}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={isSaving}
+                className="flex-1"
+              >
+                {isSaving ? 'Saving...' : 'Save Changes'}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function DeleteModal({
+  isOpen,
+  onClose,
+  onConfirm,
+  courseTitle,
+  isDeleting,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  courseTitle: string;
+  isDeleting: boolean;
+}) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* Modal */}
+      <Card className="relative z-10 w-full max-w-md mx-4 shadow-xl">
+        <CardHeader className="pb-4">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-destructive/10 rounded-full">
+                <AlertTriangle className="w-5 h-5 text-destructive" />
+              </div>
+              <div>
+                <CardTitle className="text-lg">Delete Course</CardTitle>
+                <CardDescription className="mt-1">
+                  This action cannot be undone
+                </CardDescription>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-muted rounded-sm transition-colors"
+              disabled={isDeleting}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Are you sure you want to delete <span className="font-semibold text-foreground">"{courseTitle}"</span>?
+            All associated data will be permanently removed.
+          </p>
+          <div className="flex gap-3 pt-2">
+            <Button
+              variant="outline"
+              onClick={onClose}
+              disabled={isDeleting}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={onConfirm}
+              disabled={isDeleting}
+              className="flex-1"
+            >
+              {isDeleting ? 'Deleting...' : 'Delete'}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 function CoursesPage() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [courseToDelete, setCourseToDelete] = useState<{ id: string; title: string } | null>(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [courseToEdit, setCourseToEdit] = useState<Course | null>(null);
+
   const { data: courses, isLoading, error } = useQuery<Course[]>({
     queryKey: ['courses'],
     queryFn: backendFetcher<Course[]>('/courses'),
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: (courseId: string) => {
+      return mutateBackend<CourseOut>(`/courses/${courseId}`, 'DELETE');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
+      setDeleteModalOpen(false);
+      setCourseToDelete(null);
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: { title: string; code: string; description: string } }) => {
+      return mutateBackend<CourseOut>(`/courses/${id}`, 'PATCH', data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
+      setEditModalOpen(false);
+      setCourseToEdit(null);
+    },
+  });
+
+  const handleDeleteClick = (courseId: string, courseTitle: string) => {
+    setCourseToDelete({ id: courseId, title: courseTitle });
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (courseToDelete) {
+      deleteMutation.mutate(courseToDelete.id);
+    }
+  };
+
+  const handleEditClick = (course: Course) => {
+    setCourseToEdit(course);
+    setEditModalOpen(true);
+  };
+
+  const handleSaveEdit = (data: { title: string; code: string; description: string }) => {
+    if (courseToEdit) {
+      updateMutation.mutate({ id: courseToEdit.id, data });
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight">Courses</h1>
-        <p className="text-muted-foreground">
-          Explore available courses and start learning
-        </p>
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold tracking-tight">Courses</h1>
+          <p className="text-muted-foreground">
+            Explore available courses and start learning
+          </p>
+        </div>
+        <Button
+          onClick={() => navigate({ to: '/courses/create' })}
+        >
+          <Plus className="w-4 h-4 mr-2" />
+          Create Course
+        </Button>
       </div>
 
       {isLoading ? (
@@ -88,35 +347,77 @@ function CoursesPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {courses.map((course) => (
-              <Link key={course.id} to="/courses/$id" params={{ id: course.id }}>
-                <Card className="h-full hover:shadow-md hover:border-primary/50 transition-all cursor-pointer group">
-                  <CardHeader className="space-y-3">
-                    <div className="flex items-start justify-between gap-2">
-                      <Badge variant="default" className="text-xs">{course.code}</Badge>
+              <Card key={course.id} className="h-full hover:shadow-md hover:border-primary/50 transition-all group">
+                <CardHeader className="space-y-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <Badge variant="default" className="text-xs">{course.code}</Badge>
+                    <div className="flex gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleEditClick(course)}
+                        className="p-1.5 hover:bg-primary/10 rounded transition-colors"
+                        title="Edit course"
+                      >
+                        <Edit className="w-3.5 h-3.5 text-primary" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteClick(course.id, course.title)}
+                        className="p-1.5 hover:bg-destructive/10 rounded transition-colors"
+                        title="Delete course"
+                        disabled={deleteMutation.isPending}
+                      >
+                        <Trash2 className="w-3.5 h-3.5 text-destructive" />
+                      </button>
                     </div>
-                    <div className="space-y-2">
-                      <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors">
+                  </div>
+                  <div className="space-y-2">
+                    <Link to="/courses/$id" params={{ id: course.id }}>
+                      <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors cursor-pointer">
                         {course.title}
                       </CardTitle>
-                      {course.description && (
-                        <CardDescription className="text-sm line-clamp-2">
-                          {course.description}
-                        </CardDescription>
-                      )}
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <User className="w-3 h-3" />
-                      <span>{course.instructor.name}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+                    </Link>
+                    {course.description && (
+                      <CardDescription className="text-sm line-clamp-2">
+                        {course.description}
+                      </CardDescription>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <User className="w-3 h-3" />
+                    <span>{course.instructor?.name || 'Unknown'}</span>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       )}
+
+      <EditModal
+        key={courseToEdit?.id}
+        isOpen={editModalOpen}
+        onClose={() => {
+          setEditModalOpen(false);
+          setCourseToEdit(null);
+        }}
+        onSave={handleSaveEdit}
+        course={courseToEdit}
+        isSaving={updateMutation.isPending}
+      />
+
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setCourseToDelete(null);
+        }}
+        onConfirm={handleConfirmDelete}
+        courseTitle={courseToDelete?.title || ''}
+        isDeleting={deleteMutation.isPending}
+      />
     </div>
   );
 }
