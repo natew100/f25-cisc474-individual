@@ -3,5 +3,11 @@
   "name": "cisc474-individual",
   "compatibility_date": "2025-09-02",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "@tanstack/react-start/server-entry"
+  "main": "@tanstack/react-start/server-entry",
+  "vars": {
+    "VITE_BACKEND_URL": "https://f25-cisc474-individual-uiof.onrender.com",
+    "VITE_AUTH0_DOMAIN": "dev-pgrtcb4selmwe50h.us.auth0.com",
+    "VITE_AUTH0_CLIENT_ID": "zaBsrdaqVDMkg6odhIUkersD7cyxdK9E",
+    "VITE_AUTH0_AUDIENCE": "https://f25-cisc474-individual-uiof.onrender.com"
+  }
 }
