@@ -4,7 +4,6 @@
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 generator client {
@@ -14,18 +13,34 @@ generator client {
 
 // User model with role-based access
 model User {
-  id            String       @id @default(uuid())
-  name          String
-  email         String       @unique
-  role          UserRole     @default(STUDENT)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  id              String           @id @default(uuid())
+  name            String?
+  email           String?          @unique
+  role            UserRole         @default(STUDENT)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
 
   // Relations
-  enrollments   Enrollment[]
-  ownedCourses  Course[]     @relation("CourseInstructor")
-  submissions   Submission[]
-  feedback      Feedback[]
+  authentications Authentication[]
+  enrollments     Enrollment[]
+  ownedCourses    Course[]         @relation("CourseInstructor")
+  submissions     Submission[]
+  feedback        Feedback[]
+}
+
+// Authentication model for Auth0 provider mapping
+model Authentication {
+  id          String   @id @default(uuid())
+  userId      String
+  provider    String   // e.g., "auth0", "google-oauth2"
+  providerId  String   // The user ID from the provider
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerId])
 }
 
 enum UserRole {

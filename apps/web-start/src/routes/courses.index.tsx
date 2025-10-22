@@ -1,14 +1,16 @@
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { backendFetcher, mutateBackend } from '../integrations/fetcher';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useApiQuery, useApiMutation } from '../integrations/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
-import { User, Database, Plus, Edit, Trash2, AlertTriangle, X } from 'lucide-react';
+import { User, Database, Plus, Edit, Trash2, AlertTriangle, X, Lock } from 'lucide-react';
 import { CourseOut } from '@repo/api';
+import LoginButton from '../components/LoginButton';
 
 export const Route = createFileRoute('/courses/')({
   component: CoursesPage,
@@ -236,37 +238,70 @@ function DeleteModal({
 function CoursesPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { isAuthenticated, isLoading: authLoading } = useAuth0();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<{ id: string; title: string } | null>(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [courseToEdit, setCourseToEdit] = useState<Course | null>(null);
 
-  const { data: courses, isLoading, error } = useQuery<Course[]>({
-    queryKey: ['courses'],
-    queryFn: backendFetcher<Course[]>('/courses'),
-  });
+  // ALL HOOKS MUST BE AT THE TOP - before any conditional returns!
+  const { data: courses, isLoading, error } = useApiQuery<Course[]>(
+    ['courses'],
+    '/courses'
+  );
 
-  const deleteMutation = useMutation({
-    mutationFn: (courseId: string) => {
-      return mutateBackend<CourseOut>(`/courses/${courseId}`, 'DELETE');
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['courses'] });
-      setDeleteModalOpen(false);
-      setCourseToDelete(null);
-    },
-  });
+  const deleteMutation = useApiMutation<string, CourseOut>(
+    (courseId) => `/courses/${courseId}`,
+    'DELETE',
+    {
+      invalidateQueries: [['courses']],
+      onSuccess: () => {
+        setDeleteModalOpen(false);
+        setCourseToDelete(null);
+      },
+    }
+  );
 
-  const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: { title: string; code: string; description: string } }) => {
-      return mutateBackend<CourseOut>(`/courses/${id}`, 'PATCH', data);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['courses'] });
-      setEditModalOpen(false);
-      setCourseToEdit(null);
-    },
-  });
+  const updateMutation = useApiMutation<{ id: string; data: { title: string; code: string; description: string } }, CourseOut>(
+    (input) => `/courses/${input.id}`,
+    'PATCH',
+    {
+      invalidateQueries: [['courses']],
+      onSuccess: () => {
+        setEditModalOpen(false);
+        setCourseToEdit(null);
+      },
+    }
+  );
+
+  // Show login prompt if not authenticated (AFTER all hooks)
+  if (!authLoading && !isAuthenticated) {
+    return (
+      <div className="space-y-6">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold tracking-tight">Courses</h1>
+          <p className="text-muted-foreground">
+            Explore available courses and start learning
+          </p>
+        </div>
+
+        <Card className="border-primary/50">
+          <CardHeader className="text-center pb-4">
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <Lock className="w-8 h-8 text-primary" />
+            </div>
+            <CardTitle className="text-xl">Authentication Required</CardTitle>
+            <CardDescription>
+              Please log in to view and manage courses
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-center pb-6">
+            <LoginButton />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   const handleDeleteClick = (courseId: string, courseTitle: string) => {
     setCourseToDelete({ id: courseId, title: courseTitle });

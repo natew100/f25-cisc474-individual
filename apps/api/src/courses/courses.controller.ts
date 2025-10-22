@@ -6,11 +6,14 @@ import {
   Delete,
   Param,
   Body,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { CoursesService } from './courses.service';
 import { CourseCreateIn, CourseUpdateIn } from '@repo/api/courses/index';
 
 @Controller('courses')
+@UseGuards(AuthGuard('jwt'))
 export class CoursesController {
   constructor(private readonly coursesService: CoursesService) {}
 
