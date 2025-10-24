@@ -12,6 +12,10 @@ type JwtPayload = {
   iss: string;
   aud: string | string[];
   scope?: string;
+  // Custom claims with namespace
+  'https://f25-cisc474-individual-uiof.onrender.com/name'?: string;
+  'https://f25-cisc474-individual-uiof.onrender.com/email'?: string;
+  'https://f25-cisc474-individual-uiof.onrender.com/email_verified'?: boolean;
 };
 
 export interface JwtUser {
@@ -45,7 +49,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload): Promise<JwtUser> {
-    console.log('🔐 JWT Validate called with payload:', { sub: payload.sub, aud: payload.aud });
+    const name = payload['https://f25-cisc474-individual-uiof.onrender.com/name'];
+    const email = payload['https://f25-cisc474-individual-uiof.onrender.com/email'];
+
+    console.log('🔐 JWT Validate called with payload:', {
+      sub: payload.sub,
+      aud: payload.aud,
+      name: name,
+      email: email
+    });
 
     const { sub } = payload;
     const { provider, providerId } = splitSub(sub);
@@ -61,18 +73,24 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       console.log('✨ Creating new user - first time login!');
       const user = await this.prisma.user.create({
         data: {
+          name: name || null,
+          email: email || null,
           authentications: {
             create: { provider, providerId },
           },
         },
       });
-      console.log('✅ User created:', user.id);
+      console.log('✅ User created:', user.id, 'with name:', user.name, 'email:', user.email);
       auth = { ...auth, user } as any;
     } else {
       console.log('👤 Existing user found:', auth.userId);
+      // Update user with latest name/email from Auth0
       await this.prisma.user.update({
         where: { id: auth.userId },
-        data: {},
+        data: {
+          name: name || auth.user.name,
+          email: email || auth.user.email,
+        },
       });
     }
 

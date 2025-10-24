@@ -26,6 +26,7 @@ export const getRouter = () => {
           authorizationParams={{
             redirect_uri,
             audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+            scope: 'openid profile email',
           }}
           cacheLocation="localstorage"
           useRefreshTokens={true}
