@@ -1,7 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { mutateBackend } from '../integrations/fetcher';
+import { useApiMutation } from '../integrations/api';
 import { CourseCreateIn, CourseOut } from '@repo/api';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -18,18 +17,16 @@ function RouteComponent() {
   const [code, setCode] = useState('');
   const [instructorId, setInstructorId] = useState('');
 
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: (newCourse: CourseCreateIn) => {
-      return mutateBackend<CourseOut>('/courses', 'POST', newCourse);
-    },
-    onSuccess: (data: CourseOut) => {
-      queryClient.setQueryData(['courses', data.id], data);
-      queryClient.invalidateQueries({ queryKey: ['courses'] });
-      navigate({ to: '/courses' });
-    },
-  });
+  const mutation = useApiMutation<CourseCreateIn, CourseOut>(
+    '/courses',
+    'POST',
+    {
+      invalidateQueries: [['courses']],
+      onSuccess: () => {
+        navigate({ to: '/courses' });
+      },
+    }
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

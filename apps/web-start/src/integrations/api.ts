@@ -125,14 +125,16 @@ export function useApiMutation<Input = void, Output = unknown>(
       const finalEndpoint = typeof endpoint === 'function' ? endpoint(data) : endpoint;
       return request<Output>(finalEndpoint, {
         method,
-        body: data ? JSON.stringify(data) : undefined,
+        body: method !== 'DELETE' && data ? JSON.stringify(data) : undefined,
       });
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: async (data, variables, context) => {
       if (options?.invalidateQueries) {
-        options.invalidateQueries.forEach((queryKey) => {
-          queryClient.invalidateQueries({ queryKey });
-        });
+        await Promise.all(
+          options.invalidateQueries.map((queryKey) =>
+            queryClient.invalidateQueries({ queryKey, refetchType: 'active' })
+          )
+        );
       }
       options?.onSuccess?.(data, variables, context);
     },

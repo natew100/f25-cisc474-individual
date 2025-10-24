@@ -262,8 +262,8 @@ function CoursesPage() {
     }
   );
 
-  const updateMutation = useApiMutation<{ id: string; data: { title: string; code: string; description: string } }, CourseOut>(
-    (input) => `/courses/${input.id}`,
+  const updateMutation = useApiMutation<{ title: string; code: string; description: string }, CourseOut>(
+    () => `/courses/${courseToEdit?.id}`,
     'PATCH',
     {
       invalidateQueries: [['courses']],
@@ -321,7 +321,7 @@ function CoursesPage() {
 
   const handleSaveEdit = (data: { title: string; code: string; description: string }) => {
     if (courseToEdit) {
-      updateMutation.mutate({ id: courseToEdit.id, data });
+      updateMutation.mutate(data);
     }
   };
 
